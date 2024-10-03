@@ -1,0 +1,4 @@
+# Files we don't want to commit
+
+.env
+# node_modules
