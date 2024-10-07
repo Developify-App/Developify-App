@@ -1,21 +1,15 @@
 {
-  "name": "developify",
+  "name": "developify-app",
   "version": "1.0.0",
-  "description": "Developify App",
+  "description": "Express.js app connected to MySQL with proper file structure.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "node src/app.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mysql2": "^3.2.3"
   },
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "body-parser": "^1.20.3",
-    "express": "^4.21.0",
-    "mysql": "^2.18.1"
-  },
-  "devDependencies": {
-    "dotenv": "^16.4.5",
-    "nodemon": "^3.1.7"
-  }
+  "license": "ISC"
 }
