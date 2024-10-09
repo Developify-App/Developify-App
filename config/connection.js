@@ -1,4 +1,4 @@
-var mysql =  require("mysql");
+/*var mysql =  require("mysql");
 
 //Create Connections
 var mysqlConnection = mysql.createConnection({
@@ -18,4 +18,4 @@ mysqlConnection.connect((err) => {
 })
 
 
-module.exports =mysqlConnection ;
+module.exports =mysqlConnection ;*/
