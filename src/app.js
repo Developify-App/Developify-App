@@ -1,6 +1,8 @@
 const express = require('express');
 const helloRoutes = require('./routes/helloRoutes');
+
 const investorRoutes = require('./routes/investorRoutes');
+const landownerRoutes = require('./routes/landownerRoutes');
 
 const app = express();
 
@@ -12,5 +14,6 @@ app.use('/api', helloRoutes);
 
 // Use investor routes
 app.use('/api/investors', investorRoutes);
+app.use('/', landownerRoutes);
 
 module.exports = app;
