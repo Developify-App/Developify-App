@@ -1,15 +1,36 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const mysql = require('mysql')
+const express = require('express');
+const mysql = require("mysql");
+const dotenv = require('dotenv');
 
-const app = express()
-const port = process.env.PORT || 5000
+dotenv.config({path : './.env'});
+const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false}))
+const db = mysql.createConnection({
+    host: process.env.DATABASE_HOST,
+    user: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASSWORD,  
+    database: process.env.DATABASE
+  });
 
-app.use(bodyParser.json())
+  db.connect((err) => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err.message);
+      return;
+    }
+    console.log('Connected to the MySQL database: developify');
+  });
 
-// MYSQL
+app.get("/", (req, res) =>{
+    res.send("<h1>Home Page<h1>")
+});
 
-// LISTEN ON ENVIRONMENT PORT OR 5000
-app.listen(port, () => console.log(`Listen on port ${port}`))
+app.use(express.json());
+
+//Define Router
+app.use('/',require('./routes/userRoutes'));
+const port = 3000;
+
+// Start the server
+app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
+  });
