@@ -4,7 +4,9 @@ const landownerController = require('../controllers/landownerController');
 
 const router = express.Router();
 
-// Investor signup route
+/*
+Signup
+*/
 router.post('/signup',
     [
         // Validate and sanitize inputs
@@ -20,6 +22,17 @@ router.post('/signup',
         // })
     ],
     landownerController.signup
+);
+
+/*
+Login
+*/
+router.post('/login',
+    [
+        body('email').isEmail().withMessage('Valid email is required'),
+        body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long')
+    ],
+    landownerController.login
 );
 
 module.exports = router;

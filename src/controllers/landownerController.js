@@ -2,6 +2,9 @@ const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
 const db = require('../config/dbConfig');
 
+/*
+Signup
+*/
 exports.signup = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -33,3 +36,54 @@ exports.signup = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 };
+
+/*
+Login
+*/
+exports.login = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { email, password } = req.body;
+
+    const [existingLandowner] = await db.query('SELECT * FROM landonwer WHERE email = ?', [email]);
+
+    if (existingLandowner.length > 0) {
+        bcrypt.compare(password, existingLandowner[0].password, (error, response) => {
+            if (error) {
+                res.json({
+                    success: false,
+                    message: "error comparing"
+                })
+            }
+            if (response) {
+                const user = {
+                    landOwner: existingLandowner[0].landOwner,
+                    name: existingLandowner[0].name,
+                    surname: existingLandowner[0].surname
+                }
+                res.json({
+                    success: true,
+                    existingLandowner,
+                    user,
+                    message: "Welcome " + user.name + ' ' + user.surname
+                })
+                console.log("LOGIN SUCCESSFULLY")
+            } else {
+                res.json({
+                    success: false,
+                    message: "password does not match "
+                })
+                console.log("LOGIN FAIL")
+            }
+        })
+    } else {
+        res.json({
+            success: false,
+            message: "email does not exist"
+        })
+        console.log("INCORRECT EMAIL")
+    }
+}
