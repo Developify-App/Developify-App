@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
 const db = require('../config/dbConfig');
 const randomString = require('randomstring');
-
+const nodemailer = require('nodemailer');
 
 // Function to handle investor signup
 exports.signup = async (req, res) => {
@@ -87,40 +87,23 @@ exports.login = async(req, res) => {
      }
   
 };
+//Store Generated OTP's and corresponding with email address
+let otpCache = {};
 
-
-
-  exports.reqOTP = async(req, res) => {
-
-    const { email} = req.body;
-
-    const existingInvestor = await db.query('SELECT * FROM investor WHERE email = ?', [email]);
-
-    
-
-      // Generate OTP 
-     function generateOTP(){
+ // Generate OTP 
+ function generateOTP(){
     return randomString.generate({length: 4,charset: 'numeric'});
     }
 
-    //Store Generated OTP's
-  const otpCache = {};
-
-    const otp = generateOTP();
-    otpCache  = otp; // Store OTP cache 
-
-    //Send OTP via email
-    sendOTP(existingInvestor,otp),
-    res.cookie('otpCache', {maxAge :30000, httponly : true});
-    res.status(200).json({message : 'OTP sent successfuly'});
+    
 
 //Send OTP via Email
-function sendOTP(existingInvestor,otp){
-
+function sendOTP(email,otp){
+    
     const mailOptions = {
 
         from :'Joel@gmail.com',
-        to: existingInvestor,
+        to: email,
         subject :'OTP Varification',
         text: `Your OTP for vzrification is : ${otp}`
     }
@@ -128,7 +111,7 @@ function sendOTP(existingInvestor,otp){
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'jntokozo195@gmail.com',
+            user: 'developify@gmail.com',
             pass: 'kcdabumoyiwrbpyg'
         }
        
@@ -136,15 +119,56 @@ function sendOTP(existingInvestor,otp){
 
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
-            console.log(error);
-            res.send({message:'Unable to send the verification', success:false})
+            console.log('Error occurred: ', error);
+            
         } else {
-            console.log('Email sent: ' + info.response);
-            res.send({message:'Email sent: ' + info.response, success:true})
+            console.log('OTP Email sent successfuly: ' + info.response);
+            
         };
     });
 
 
 };
+
+
+  exports.reqOTP = async(req, res) => {
+
+    const { email} = req.body;
+
+    
+    const otp = generateOTP();
+    otpCache [email] = otp; // Store OTP cache 
+
+    //Send OTP via email
+    sendOTP(email,otp),
+    res.cookie('otpCache',otpCache, {maxAge :30000, httponly : true});
+    res.status(200).json({message : 'OTP sent successfuly'});
+console.log(otpCache);
+
+
+  }
+
+  //Email verify OTP
+  exports.verifyOTP = async(req, res) => {
+
+const { email,otp} = req.body;
+
+//check if email exsiting in cache
+console.log(otpCache.email);
+if(otpCache.email){
+
+    return res.status(400).json({message : 'Email not found'});
+
+}
+
+//Check if OTP matches the one that stored in the cache
+if(otpCache[email]== otp){
+    //Remove OTP from cache after successful verification
+    delete otpCache[email];
+    return res.status(200).json({message : 'OTP verified successfully'});
+
+}else{
+    return res.status(400).json({message : 'invalid OTP'});
+}
 
   }

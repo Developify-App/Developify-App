@@ -41,4 +41,14 @@ router.post('/reqOTP',
     ],
     investorController.reqOTP
 );
+
+// Investor OTP varification
+router.post('/verifyOTP',
+    [
+
+      body('email').isEmail().withMessage('Valid email is required')
+      
+    ],
+    investorController.verifyOTP
+);
 module.exports = router;
