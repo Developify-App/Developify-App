@@ -1,10 +1,10 @@
 const express = require('express');
 const { body } = require('express-validator');
-const investorController = require('../controllers/investorController');
+const adminController = require('../controllers/adminController');
 
 const router = express.Router();
 
-// Investor signup route
+// Admin signup route
 router.post('/signup',
     [
         // Validate and sanitize inputs
@@ -19,26 +19,18 @@ router.post('/signup',
             return true;
         })
     ],
-    investorController.signup
+    adminController.signup
 );
 
-// Investor login route
+// Admin login route
 router.post('/login',
     [
 
       body('email').isEmail().withMessage('Valid email is required'),
       body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long')
     ],
-    investorController.login
+    adminController.login
 );
 
-// Investor request OTP
-router.post('/reqOTP',
-    [
 
-      body('email').isEmail().withMessage('Valid email is required')
-      
-    ],
-    investorController.reqOTP
-);
 module.exports = router;
