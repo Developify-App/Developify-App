@@ -154,7 +154,7 @@ console.log(otpCache);
 const { email,otp} = req.body;
 
 //check if email exsiting in cache
-console.log(otpCache.email);
+
 if(otpCache.email){
 
     return res.status(400).json({message : 'Email not found'});
