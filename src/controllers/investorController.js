@@ -29,7 +29,12 @@ exports.signup = async (req, res) => {
             [name, surname, email, hashedPassword]
         );
 
-        res.status(201).json({ message: 'Investor registered successfully', investor_id: result[0].insertId });
+        //res.status(201).json({ message: 'Investor registered successfully', investor_id: result[0].insertId });
+        res.json({
+            success: true,
+            investor_id: result[0].insertId,
+            message: "Investor registered successfully "
+        })
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Server error' });
@@ -102,7 +107,7 @@ function sendOTP(email,otp){
     
     const mailOptions = {
 
-        from :'Joel@gmail.com',
+        from :'jntokozo195@gmail.com',
         to: email,
         subject :'OTP Varification',
         text: `Your OTP for vzrification is : ${otp}`
@@ -111,7 +116,7 @@ function sendOTP(email,otp){
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'developify@gmail.com',
+            user: 'jntokozo195@gmail.com',
             pass: 'kcdabumoyiwrbpyg'
         }
        
@@ -123,6 +128,7 @@ function sendOTP(email,otp){
             
         } else {
             console.log('OTP Email sent successfuly: ' + info.response);
+           
             
         };
     });
@@ -142,7 +148,12 @@ function sendOTP(email,otp){
     //Send OTP via email
     sendOTP(email,otp),
     res.cookie('otpCache',otpCache, {maxAge :30000, httponly : true});
-    res.status(200).json({message : 'OTP sent successfuly'});
+    //res.status(200).json({message : 'OTP sent successfuly and OTP is : ' + otp});
+    res.json({
+        success: true,
+        otp,
+        message: "OTP sent successfuly "
+    })
 console.log(otpCache);
 
 
@@ -154,7 +165,6 @@ console.log(otpCache);
 const { email,otp} = req.body;
 
 //check if email exsiting in cache
-
 if(otpCache.email){
 
     return res.status(400).json({message : 'Email not found'});

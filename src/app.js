@@ -2,6 +2,7 @@ const express = require('express');
 const helloRoutes = require('./routes/helloRoutes');
 const investorRoutes = require('./routes/investorRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const accountRoutes = require('./routes/accountRoutes');
 
 const app = express();
 
@@ -16,5 +17,8 @@ app.use('/api/investors', investorRoutes);
 
 // Use admin routes
 app.use('/api/admin', adminRoutes);
+
+// Use account routes
+app.use('/api/account', accountRoutes);
 
 module.exports = app;
