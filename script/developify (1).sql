@@ -86,6 +86,26 @@ CREATE TABLE `landonwer` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- Table structure for table `investor account`
+--
+
+CREATE TABLE `account` (
+  `account_id` int(45) NOT NULL,
+  `totalAmount` int(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Table structure for table `investor account`
+--
+
+CREATE TABLE `transaction` (
+  `transaction_id` int(45) NOT NULL,
+  `amount` int(45) NOT NULL,
+  `date` varchar(255) NOT NULL
+  
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- Indexes for dumped tables
 --
 
