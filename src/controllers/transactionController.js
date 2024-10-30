@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-
 const db = require('../config/dbConfig');
 
 exports.deposit = async (req, res) => {
@@ -28,13 +26,3 @@ exports.deposit = async (req, res) => {
         })
 
         }
-=======
-
-const db = require('../config/dbConfig');
-
-exports.deposit = async (req, res) => {
-
-    const {transaction_id } = req.body;
-
->>>>>>> fb5b6ccaa8cbbc78c7bdc8959f9134b105420817
-}
