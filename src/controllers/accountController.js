@@ -1,13 +1,14 @@
 const db = require('../config/dbConfig');
 
 exports.firstDeposit = async (req, res) => {
-    const {totalAmount} = req.body;
+    const {total_amount} = req.body;
 
     // Deposit money and insert into the database
     const result = await db.query(
-        'INSERT INTO account (totalAmount) VALUES (?)',
-        [totalAmount]
+        'INSERT INTO account (total_amount) VALUES (?)',
+        [total_amount]
     );
+    
     res.status(201).json({ message: 'Deposited successfully', account_id: result[0].insertId });
 } 
 exports.deposit = async (req, res) => {

@@ -11,5 +11,7 @@ router.put('/deposit', accountController.deposit);
 // Define a route that handles PUT for  withdraw
 router.put('/withdraw', accountController.withdraw);
 
+module.exports = router;
+
 
 

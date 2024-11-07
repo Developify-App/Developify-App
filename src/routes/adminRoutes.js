@@ -32,4 +32,5 @@ router.post('/login',
     adminController.login
 );
 
+module.exports = router;
 
