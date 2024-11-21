@@ -17,6 +17,7 @@ app.use('/api/investments', require('./routes/Investments'));
 app.use('/api/accounts', require('./routes/Account'));
 app.use('/api/sendmail', require('./routes/send_mail'));
 app.use('/api/notifications', require('./routes/notifications'));
+app.use('/api/admin', require('./routes/admin'));
 
 app.use('/', (req, res) => {
     res.send('Endpoint')
